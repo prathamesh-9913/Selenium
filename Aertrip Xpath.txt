@@ -1,0 +1,19 @@
+Aertrip
+
+String aertripLogo = "//div[@class='css-logo css-logo-white']";
+String hotels = "//div[@class='navBar']//ul//li[@id='hotels-module']";
+string hotel menu selected = "//div[@class='navBar']//ul//li[@class='menu-selected' and @id='hotels-module']";
+String city,area = "//div[@class='hotel-single-location']";
+String text input city = "//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']";
+String calendar = "//div[@class='hotel-calender']";
+String 1 calendar = "//div[@class='calDiv']";
+String 2 calendar = "//div[@class='retuning-cal']";
+String date container = "//div[@class='datepickerContainer']";
+
+String rooms = "//div[@class='formGuest']";
+String Room1 = "//div[@class='roomDiv' and contains(text(),'Room 1')]";
+String Room1 = "//div[@class='roomDiv' and contains(text(),'Room 2')]";
+
+2 adults
+$x("(//div[@class='adultsDiv'])[1]//i[@class='icon icon_adult-selected']");
+
