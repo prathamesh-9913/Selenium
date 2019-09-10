@@ -13,6 +13,7 @@ import java.util.TimeZone;
 import java.util.List;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -22,7 +23,14 @@ public class Aertrip {
 
 	public static void main(String[] args) {
 
-		WebDriver driver = new FirefoxDriver();
+		// Firefox Driver
+		
+		//WebDriver driver = new FirefoxDriver();
+		
+		// Chrome Driver
+		
+		System.setProperty("webdriver.chrome.driver", "Provide/path/to/chromedriver");
+		WebDriver driver = new ChromeDriver();
 		driver.manage().window().maximize();
 
 		String URL = "https://aertrip.com/";		
@@ -74,7 +82,10 @@ public class Aertrip {
 			driver.findElement(By.xpath("//div[@class='hotel-single-location']")).isEnabled();
 
 			//Click in input textbox of city, area and hotel
+
+			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).clear();
 			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).click();
+
 
 			//Search Mumbai in city, area and hotel filter
 			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).sendKeys("Mumbai");
@@ -109,8 +120,8 @@ public class Aertrip {
 
 			WebElement dateFrom = driver.findElement(By.xpath("(//div[@class='datepickerContainer']//td//table)[2]//tbody[@class='datepickerDays']"));
 
-			list<WebElement> columns = dateFrom.findElement(By.tagName("td"));
-
+			List<WebElement> columns= dateFrom.findElements(By.tagName("td"));
+			
 			for(WebElement cell: columns)
 			{
 				if(cell.getText().equals(checkinDate)){
@@ -119,12 +130,34 @@ public class Aertrip {
 				}		
 			}
 
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			driver.findElement(By.xpath("//div[@class='formBar formBarBot']")).click();
+			
+			//Click and open datepicker option to select return date
+			driver.findElement(By.xpath("//div[@class='retuning-cal']")).click();
+
+			//Check after click on datepicker option calender container visible or not
+			driver.findElement(By.xpath("//div[@class='datepickerContainer']")).isEnabled();
+		
 			for(WebElement cell: columns)
 			{
+				try{
 				if(cell.getText().equals(checkoutDate)){
 					cell.click();
 					break;
-				}		
+				}	}
+				catch(Exception e)
+				{
+					driver.findElement(By.xpath("(//div[@class='datepickerContainer']//td//table)[2]//tbody[@class='datepickerDays']//td//span[contains(text(),'20')]")).click();
+					//e.printStackTrace();
+					break;
+				}
 			}
 
 			// wait for 4 seconds to check checkin and checkout date selected or not
@@ -254,6 +287,9 @@ public class Aertrip {
 			//Click to Book Hotel
 			driver.findElement(By.xpath("//div[@class='css-hotel-booking-action']//button")).click();
 
+			System.out.println("Hotel Book Successfully");
+			
+			driver.quit();
 		}
 	}
 
@@ -262,11 +298,11 @@ public class Aertrip {
 		Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
 		int checkinDay = calendar.get(Calendar.DAY_OF_MONTH)+6;
-		System.out.println("Checkin Day :"+checkinDay+"\n");
+		//System.out.println("Checkin Day :"+checkinDay+"\n");
 
 		// Integer to String Conversion
 		String checkinDayStr = Integer.toString(checkinDay);
-		System.out.println("Checkin Day String :"+checkinDayStr+"\n");
+		//System.out.println("Checkin Day String :"+checkinDayStr+"\n");
 
 		return checkinDayStr;
 	}
@@ -276,11 +312,11 @@ public class Aertrip {
 		Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
 		int checkoutDay = calendar.get(Calendar.DAY_OF_MONTH)+9;
-		System.out.println("Checkin Day :"+checkoutDay+"\n");
+		//System.out.println("Checkin Day :"+checkoutDay+"\n");
 
 		// Integer to String Conversion
 		String checkoutDayStr = Integer.toString(checkoutDay);
-		System.out.println("Checkin Day String :"+checkoutDayStr+"\n");
+		//System.out.println("Checkin Day String :"+checkoutDayStr+"\n");
 
 		return checkoutDayStr;
 	}
