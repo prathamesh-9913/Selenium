@@ -15,7 +15,9 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 
 
@@ -24,14 +26,11 @@ public class Aertrip {
 	public static void main(String[] args) {
 
 		// Firefox Driver
-		
 		//WebDriver driver = new FirefoxDriver();
-		
+
 		// Chrome Driver
-		
-		System.setProperty("webdriver.chrome.driver", "Provide/path/to/chromedriver");
+		System.setProperty("webdriver.chrome.driver", "C:\\jdk1.8.0_20\\chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
-		driver.manage().window().maximize();
 
 		String URL = "https://aertrip.com/";		
 		boolean flag = true;
@@ -59,11 +58,32 @@ public class Aertrip {
 
 		if(flag)
 		{
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			// Check Aertrip Logo visible or not
-			driver.findElement(By.xpath("//div[@class='css-logo css-logo-white']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='css-logo css-logo-white']")).isDisplayed();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// Check Hotel Menu visible or not
-			driver.findElement(By.xpath("//div[@class='navBar']//ul//li[@id='hotels-module']")).isEnabled();
+			driver.findElement(By.xpath("//li[@id='hotels-module']")).isDisplayed();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			//Click Hotel Menu
 			driver.findElement(By.xpath("//div[@class='navBar']//ul//li[@id='hotels-module']")).click();
@@ -79,16 +99,17 @@ public class Aertrip {
 			driver.findElement(By.xpath("//div[@class='navBar']//ul//li[@class='menu-selected' and @id='hotels-module']")).isSelected();
 
 			//Check City, Area and Hotel visible or not
-			driver.findElement(By.xpath("//div[@class='hotel-single-location']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='hotel-single-location']")).isDisplayed();
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//Click in input textbox of city, area and hotel
 
 			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).clear();
-			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).click();
-
-
-			//Search Mumbai in city, area and hotel filter
-			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).sendKeys("Mumbai");
 
 			try {
 				Thread.sleep(2000);
@@ -97,31 +118,50 @@ public class Aertrip {
 				e.printStackTrace();
 			}
 
+			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).click();
+
+			//Search Mumbai in city, area and hotel filter
+			driver.findElement(By.xpath("//div[@class='hotel-single-location']//input[@class='ui-autocomplete-input']")).sendKeys("Mumbai");
+
+			try {
+				Thread.sleep(5000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			//Check after search Mumbai results are visible or not
-			driver.findElement(By.xpath("//ul[@class='ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ps ps--active-y']")).isEnabled();
+			//	driver.findElement(By.xpath("//ul[@class='ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ps ps--active-y']")).isEnabled();
 
 			//Select aany 1 city, area and hotel
-			driver.findElement(By.xpath("(//ul[@class='ui-autocomplete ui-front ui-menu ui-widget ui-widget-content ps ps--active-y']//li)[2]")).click();
+			driver.findElement(By.xpath("(//ul//li[@class='ui-menu-item'])[1]")).click();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			//Check hotel datepicker calender visible or not
-			driver.findElement(By.xpath("//div[@class='hotel-calender']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='hotel-calender']")).isDisplayed();
 
 			//Click and open datepicker option to select date
 			driver.findElement(By.xpath("//div[@class='calDiv']")).click();
 
 			//Check after click on datepicker option calender container visible or not
-			driver.findElement(By.xpath("//div[@class='datepickerContainer']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='datepickerContainer']")).isDisplayed();
 
 			checkinDate = getCheckinDay();
 			checkoutDate = getCheckoutDay();
 
-			System.out.println("Checkin Day Number :"+checkinDate+"\n");
-			System.out.println("Checkout Day Number :"+checkoutDate+"\n");
+			System.out.println("Checkin Day Number :"+checkinDate);
+			System.out.println("Checkout Day Number :"+checkoutDate);
 
 			WebElement dateFrom = driver.findElement(By.xpath("(//div[@class='datepickerContainer']//td//table)[2]//tbody[@class='datepickerDays']"));
 
 			List<WebElement> columns= dateFrom.findElements(By.tagName("td"));
-			
+
 			for(WebElement cell: columns)
 			{
 				if(cell.getText().equals(checkinDate)){
@@ -137,25 +177,38 @@ public class Aertrip {
 				e.printStackTrace();
 			}
 
-			driver.findElement(By.xpath("//div[@class='formBar formBarBot']")).click();
-			
+			/*	driver.findElement(By.xpath("//div[@class='formBar formBarBot']")).click();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			//Click and open datepicker option to select return date
 			driver.findElement(By.xpath("//div[@class='retuning-cal']")).click();
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}*/
+
 			//Check after click on datepicker option calender container visible or not
-			driver.findElement(By.xpath("//div[@class='datepickerContainer']")).isEnabled();
-		
+			driver.findElement(By.xpath("//div[@class='datepickerContainer']")).isDisplayed();
+
 			for(WebElement cell: columns)
 			{
 				try{
-				if(cell.getText().equals(checkoutDate)){
-					cell.click();
-					break;
-				}	}
+					if(cell.getText().equals(checkoutDate)){
+						cell.click();
+						break;
+					}	}
 				catch(Exception e)
 				{
-					driver.findElement(By.xpath("(//div[@class='datepickerContainer']//td//table)[2]//tbody[@class='datepickerDays']//td//span[contains(text(),'20')]")).click();
-					//e.printStackTrace();
+					driver.findElement(By.xpath("(//div[@class='datepickerContainer']//td//table)[2]//tbody[@class='datepickerDays']//td//span[contains(text(),'18')]")).click();
+					//	e.printStackTrace();
 					break;
 				}
 			}
@@ -170,13 +223,20 @@ public class Aertrip {
 			}
 
 			//Check Rooms and guests option visible or not
-			driver.findElement(By.xpath("//div[@class='formGuest']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='formGuest']")).isDisplayed();
 
 			//Click and open Rooms and guests option to select room
 			driver.findElement(By.xpath("//div[@class='formGuest']//div[@id='guests']")).click();
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		
 			// Check Adults and Childrens options visible or not
-			driver.findElement(By.xpath("//div[@class='roomsGuestBox css-rooms-add dropdown-js rooms-dd-normal-js']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='roomsGuestBox css-rooms-add dropdown-js rooms-dd-normal-js']")).isDisplayed();
 
 			//Selecting Room 1 : 2 Adults, 1 Child
 
@@ -203,7 +263,7 @@ public class Aertrip {
 
 			//Selecting Room 2 : 3 Adults, 2 Child
 
-			if(driver.findElement(By.xpath("//div[@class='roomDiv' and contains(text(),'Room 2')]")).isEnabled())
+			if(driver.findElement(By.xpath("//div[@class='roomDiv' and contains(text(),'Room 2')]")).isDisplayed())
 			{
 
 				// Select 3 Adults, By default 2 Adults already selected so need to add 1 more adult
@@ -224,8 +284,15 @@ public class Aertrip {
 
 			}
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			// Check Search Hotel button visible or not
-			driver.findElement(By.xpath("//div[@class='buttonDiv hotel-search-button-js']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='buttonDiv hotel-search-button-js']")).isDisplayed();
 
 			//Click on Search Hotel button
 			driver.findElement(By.xpath("//div[@class='buttonDiv hotel-search-button-js']//button")).click();
@@ -233,26 +300,55 @@ public class Aertrip {
 			// wait for 20 seconds after click on search hotel to get results
 
 			try {
-				Thread.sleep(20000);
+				Thread.sleep(25000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
+
+			/*JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("document.body.style.zoom='70%'");
+			*/
+			
 			// Check Sort by option visible or not
-			driver.findElement(By.xpath("//div[@class='css-hotel-sorting css-sort-wrapper']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='css-hotel-sorting css-sort-wrapper']")).isDisplayed();
+
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			Actions action = new Actions(driver);
+			WebElement we = driver.findElement(By.xpath("//div[@class='css-hotel-sorting css-sort-wrapper']"));
+			action.moveToElement(we).build().perform();
 
 			//Click on Sort by option
-			driver.findElement(By.xpath("//div[@class='css-hotel-sorting css-sort-wrapper']//span")).click();
+			driver.findElement(By.xpath("//div[@class='css-hotel-sorting css-sort-wrapper']")).click();
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			// Check after click on sort by option dropdown list visible or not
-			driver.findElement(By.xpath("(//div[@class='css-dropdown-list'])[1]")).isEnabled();
+			driver.findElement(By.xpath("(//div[@class='css-dropdown-list'])[1]")).isDisplayed();
 
 			//Click on Distance nearest sort by option
 			driver.findElement(By.xpath("(//div[@class='css-dropdown-list'])[1]//li[contains(text(),'Price - Low to High')]")).click();
 
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 			// Check near by distance sort option visible or not
-			driver.findElement(By.xpath("//span[@class='nearby-tab-js']")).isEnabled();
+			driver.findElement(By.xpath("//span[@class='nearby-tab-js']")).isDisplayed();
 
 			//Click on near by distance sort option
 			driver.findElement(By.xpath("//span[@class='nearby-tab-js']")).click();
@@ -267,7 +363,7 @@ public class Aertrip {
 			}
 
 			// Check near by distance sort option visible or not
-			driver.findElement(By.xpath("//div[@id='nearby-hotels-js']")).isEnabled();
+			driver.findElement(By.xpath("//div[@id='nearby-hotels-js']")).isDisplayed();
 
 			//Click on 2nd lowest price hotel
 			driver.findElement(By.xpath("(//div[@id='nearby-hotels-js']//div[@class='hotel-types-box hotel-list-box'])[2]")).click();
@@ -282,13 +378,13 @@ public class Aertrip {
 			}
 
 			// Check Hotel details visible or not
-			driver.findElement(By.xpath("//div[@class='detailed-view-js css-hotel-detailed-container']")).isEnabled();
+			driver.findElement(By.xpath("//div[@class='detailed-view-js css-hotel-detailed-container']")).isDisplayed();
 
 			//Click to Book Hotel
 			driver.findElement(By.xpath("//div[@class='css-hotel-booking-action']//button")).click();
 
 			System.out.println("Hotel Book Successfully");
-			
+
 			driver.quit();
 		}
 	}
@@ -297,7 +393,7 @@ public class Aertrip {
 	{
 		Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
-		int checkinDay = calendar.get(Calendar.DAY_OF_MONTH)+6;
+		int checkinDay = calendar.get(Calendar.DAY_OF_MONTH)+3;
 		//System.out.println("Checkin Day :"+checkinDay+"\n");
 
 		// Integer to String Conversion
@@ -311,7 +407,7 @@ public class Aertrip {
 	{
 		Calendar calendar = Calendar.getInstance(TimeZone.getDefault());
 
-		int checkoutDay = calendar.get(Calendar.DAY_OF_MONTH)+9;
+		int checkoutDay = calendar.get(Calendar.DAY_OF_MONTH)+6;
 		//System.out.println("Checkin Day :"+checkoutDay+"\n");
 
 		// Integer to String Conversion
